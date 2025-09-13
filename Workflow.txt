@@ -1,0 +1,46 @@
+🔄 End-to-End Flow of the Project
+1. Backend Preparation (Before Flask App)
+    You trained multiple regression models (LinearRegression, RandomForest, XGBoost, etc.).
+    Saved each model as a .pkl file (using pickle).
+    Evaluated models (MAE, MSE, R²) and saved results in a CSV (model_evaluation_results.csv).
+
+2. Flask App Setup
+    app.py is the main file that connects everything:
+    Loads all models from .pkl.
+    Loads evaluation results CSV into a Pandas DataFrame.
+    Creates routes (/, /predict, /results).
+
+3. Routes & Workflow
+    (a) Home Page (/)
+        User sees a form (index.html).
+        Form contains:
+        Dropdown → Select model name.
+        Input fields → Income, House Age, Rooms, Bedrooms, Population.
+        User fills data & submits.
+
+    (b) Prediction (/predict)
+        Flask takes submitted form values.
+        Converts them into a Pandas DataFrame (input_df).
+        Picks the correct ML model from dictionary (models[model_name]).
+        Calls .predict(input_df) → gets predicted House Price.
+        Sends the result + model name to results.html → displays prediction.
+
+    (c) Model Evaluation Results (/results)
+        Loads the CSV (model_evaluation_results.csv).
+        Converts DataFrame into an HTML table.
+        Displays it on model.html.
+        User can compare models’ performance (MAE, MSE, R²) side by side.
+
+4. User Experience
+    User opens the app → selects model + enters values.
+    App predicts and shows House Price.
+    User can also check /results to see which model performs best.
+    This lets the user try different models and compare prediction results.
+
+5. Big Picture
+
+    Inputs (User data) → Flask → Correct Model → Prediction → Results Page
+    Extra Route → Model Evaluation Results → Compare Models
+
+⚡ In one line:
+👉 Your project is an interactive Flask web app where users can pick any regression model, enter house-related features, get predictions for house prices, and compare models’ performance.
