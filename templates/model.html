@@ -1,0 +1,91 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Evaluation Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   <style> 
+        .data {
+            margin: 0 auto;
+            width: 80%;
+        }
+        .data th, .data td {
+        text-align: center;   /* Center align both headers and data */
+        }
+    </style>
+</head>
+<body>
+    <h1 class="text-center">Model Evaluation Results</h1>
+    <div class="container">
+        {% for table in tables %}
+            {{ table|safe }}
+        {% endfor %}
+    </div>
+    <!{% for table in tables %} → Django template loop. It loops over a variable tables passed from your backend.{{ table|safe }} → outputs the table HTML directly (the |safe filter tells Django not to escape HTML, so the table displays properly instead of showing <table> tags as text).tables is usually generated from a pandas DataFrame (df.to_html()) and passed into the template.{% endfor %}
+    <div class="text-center mt-4">
+        <a href="/" class="btn btn-primary">Go Back</a>
+    </div>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Model Evaluation Results</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .data-table th, .data-table td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        .plots img { max-width:100%; height:auto; display:block; margin: 0 auto; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mt-4">Model Evaluation Results</h1>
+
+        <!-- Plots (left: R2, right: MAE) -->
+        <div class="row plots mt-4">
+            <div class="col-md-6 mb-3">
+                <img src="{{ url_for('static', filename='plots/r2.png') }}" alt="R2 by model">
+            </div>
+            <div class="col-md-6 mb-3">
+                <img src="{{ url_for('static', filename='plots/mae.png') }}" alt="MAE by model">
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="mt-3">
+            <table class="table table-bordered table-hover data-table">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Model</th>
+                        <th>MAE</th>
+                        <th>MSE</th>
+                        <th>R2</th>
+                        <th>Accuracy (%)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for row in records %}
+                    <tr {% if best_model and row['Model'] == best_model %} class="table-success" {% endif %}>
+                        <td>{{ row['Model'] }}</td>
+                        <td>{{ row['MAE'] }}</td>
+                        <td>{{ row['MSE'] }}</td>
+                        <td>{{ row['R2'] }}</td>
+                        <td>{{ row['Accuracy (%)'] }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-3">
+            <a href="/" class="btn btn-primary">Go Back</a>
+        </div>
+    </div>
+</body>
+</html>
